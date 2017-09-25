@@ -1,0 +1,139 @@
+为了让代码能够重用，请将它模块化。
+
+**探究库模块
+import copy
+[n for n in dir(copy) if not n.startswith('_')]
+
+>>> copy.__all__
+['Error', 'copy', 'deepcopy']
+
+>>> help(copy.copy)
+Help on function copy in module copy:
+copy(x)
+Shallow copy operation on arbitrary Python objects.
+See the module's __doc__ string for more info.
+
+>>> print range.__doc__
+range([start,] stop[, step]) -> list of integers
+Return a list containing an arithmetic progression of integers.
+range(i, j) returns [i, i+1, i+2,..., j-1]; start (!) defaults to 0.
+When step is given, it specifies the increment (or decrement).
+For example, range(4) returns [0, 1, 2, 3]. The end point is omitted!
+These are exactly the valid indices for a list of 4 elements.
+
+更详细的看库参考： http://python.org/doc/lib
+
+甚至看源码
+>>> print copy.__file__
+C:\Python24\lib\copy.py
+
+**一些模块
+1 sys
+stdin Standard input stream—a file-like object
+stdout Standard output stream—a file-like object
+stderr Standard error stream—a file-like object
+
+逆序打印命令行参数
+Listing 10-5. Reversing and Printing Command-Line Arguments
+# reverseargs.py
+import sys
+args = sys.argv[1:]
+args.reverse()
+print ' '.join(args)
+
+2 os
+The os module gives you access to several operating system services.
+only a few of the most useful functions and variables are described in Table 10-3. In
+addition to these, os 
+其子模块 os.path 包含检查 创建 删除目录和文件的函数
+and its submodule os.path contain several functions to examine, construct, 
+and remove directories and files, 
+as well as functions for manipulating paths (for
+example, os.path.split and os.path.join let you ignore os.pathsep most of the time). For
+more information about this functionality, see the standard library documentation.
+
+
+3 fileinput
+Listing 10-6. Adding Line Numbers to a Python Script
+# numberlines.py
+import fileinput
+for line in fileinput.input(inplace=True):
+  line = line.rstrip()
+  num = fileinput.lineno()
+  print '%-40s # %2i' % (line, num)
+
+If you run this program on itself, like this:
+$ python numberlines.py numberlines.py
+
+
+4 Sets, Heaps, and Deques
+
+5 time
+
+6 random
+random()          Returns a random real number n such that 0 n ? 1
+getrandbits(n)    Returns n random bits, in the form of a long integer
+uniform(a, b)     Returns a random real number n such that a n???b
+randrange([start], stop, [step]) Returns a random number from range(start, stop, step)
+choice(seq)       Returns a random element from the sequence seq
+shuffle(seq[, random])  Shuffles the sequence seq in place
+sample(seq, n)      Chooses n random, unique elements from the sequence seq
+
+随机角度值，可使用 uniform(0, 360)
+
+根据其他不同的分布规则抽取
+Note For the statistically inclined, there are other functions similar to  uniform that return random num-
+bers sampled according to various other distributions, such as betavariate, exponential, Gaussian, and several
+others.
+
+# 随机日期
+from random import *
+from time import *
+date1 = (2008, 1, 1, 0, 0, 0, -1, -1, -1)
+time1 = mktime(date1)
+date2 = (2009, 1, 1, 0, 0, 0, -1, -1, -1)
+time2 = mktime(date2)
+Then you generate a random number uniformly in this range (the upper limit excluded):
+>>> random_time = uniform(time1, time2)
+Then you simply convert this number back to a legible date:
+>>> print asctime(localtime(random_time))
+Mon Jun 24 21:35:19 2008
+
+# 随机单词
+# fortune.py
+import fileinput, random
+fortunes = list(fileinput.input())
+print random.choice(fortunes)
+
+In UNIX, you could test this on the standard dictionary file /usr/dict/words to get a random word:
+$ python fortune.py /usr/dict/words
+dodge
+
+
+# 发牌
+>>> values = range(1, 11) + 'Jack Queen King'.split()
+>>> suits = 'diamonds clubs hearts spades'.split()
+>>> deck = ['%s of %s' % (v, s) for v in values for s in suits]
+>>> from pprint import pprint
+>>> pprint(deck[:12])
+
+A bit too ordered, isn’t it? That’s easy to fix:
+>>> from random import shuffle
+>>> shuffle(deck)
+>>> pprint(deck[:12])
+
+Finally, to get Python to deal you a card each time you press Enter on your keyboard, until
+there are no more cards, you simply create a little while loop. Assuming that you put the code
+needed to create the deck into a program file, you could simply add the following at the end:
+while deck: raw_input(deck.pop())
+
+
+
+
+
+
+
+
+
+
+
