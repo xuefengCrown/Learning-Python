@@ -1,0 +1,51 @@
+# txt保存超链接地址 通过程序自动转化为html
+
+遇到的问题
+1 BeautifulSoup 安装
+*******************
+A 解压安装包到python工作文件夹下，如c:\python
+B 安装
+cd c:\python\beautifulsoup4-4.4.1
+C 
+python setup.py build
+python setup.py install
+ps: 如果python指令不存在，说明os找不到python.exe，那么你需要配置环境变量。
+D 使用
+from bs4 import BeautifulSoup
+*******************
+2 获取超链接的Title
+soup.title.string
+
+参考BeautifulSoup doc 
+Beautiful Soup 英文教程：
+https://www.crummy.com/software/BeautifulSoup/bs4/doc/#
+Beautiful Soup 中文教程：
+http://www.crummy.com/software/BeautifulSoup/bs4/doc.zh/
+
+3 写入文件时，出现编码问题
+C:\code_dxf\python_code\markup>python links_markup.py < hyperlinks.txt > hyperlinks.html
+问题描述
+********************
+看起来，你这里的问题，其实是：
+把文件内容，写入到文件中时，出错了。
+而出错的原因其实是，python系统，在使用默认的编码类型，此处的ascii，去将对应的内容，写入到文件中。
+但是由于其中一些内容，ascii编码不支持，所以报错。
+所以，更好的办法是，在输出的时候，对文件制定特定的UTF-8编码即可。
+而无需改动默认编码。
+具体做法是：
+不使用open打开文件，而使用codecs：
+fp = codecs.open(‘output.txt’, ‘a+’, ‘utf-8’);;
+fp.write(row[1]);
+fp.close();
+********************
+
+解决方案（不好）
+********************
+reload(sys)
+sys.setdefaultencoding('utf-8')
+********************
+
+参考
+作者：yybur
+链接：http://www.jianshu.com/p/48b01d8a09ca
+
