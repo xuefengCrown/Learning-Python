@@ -128,6 +128,17 @@ needed to create the deck into a program file, you could simply add the followin
 while deck: raw_input(deck.pop())
 
 
+8 re
+正则表达式
+
+寻找Email发信人
+
+模板系统
+Can you think of other ways of improving the program? Can you think of other uses for the
+concepts used in this program? The best way to become really proficient in any programming
+language is to play with it—test its limitations and discover its strengths. See if you can rewrite
+this program so it works better and suits your needs.
+
 
 
 
