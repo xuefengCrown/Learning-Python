@@ -1,0 +1,24 @@
+要注意的点有：
+1 xml.sax 处理xml的流程
+2 dispatch方法中 动态拼接函数并调用的技巧
+3 函数调用时，使用 * 把[]中参数拆开为参数列表
+*这里是参数展开
+例如:
+directory = ["C", "pic", "18x.jpg"]
+os.path.join(*directory)
+#相当于os.path.join("C", "pic", "18x.jpg")
+>>> "C\\pic\\18x.jpg"
+
+
+***
+以下参考：http://blog.csdn.net/tommyjsj/article/details/16329979
+***
+首先我们要解析这个xml文件，python解析xml和在java中一样，有两种方式，SAX和DOM，两种处理方式不同点在于速度和范围，
+前者讲究的是效率，每次只处理文档的一小部分，快速而能有效的利用内存，后者是相反的处理方式，
+先把所有的文档载入到内存，然后再进行处理，速度比较慢，也比较消耗内存，唯一的好处就是可以操作整个文档。
+
+在python中使用sax方式处理xml要先引入xml.sax中的parse函数，还有xml.sax.handler中的ContentHandler，
+后面的这个类是要和parse函数来配合使用的。使用方式如下： parse('xxx.xml',xxxHandler),
+这里面的xxxHandler要继承上面的ContentHandler，不过只要继承就行，不需要有所作为。 
+然后这个parse函数在处理xml文件的时候，会调用xxxHandler中的startElement函数和endElement函数来一个xml中的标签的开始和结束，
+中间的过程使用一个名为characters的函数来处理标签内部的所有字符串。
